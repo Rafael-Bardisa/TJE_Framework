@@ -71,7 +71,16 @@ void Camera::rotate(float angle, const Vector3& axis)
 	Vector3 new_front = R * (center - eye);
 	center = eye + new_front;
 	updateViewMatrix();
+}
 
+//rotates camera around center, not eye
+void Camera::rotateView(float angle, const Vector3& axis)
+{
+    Matrix44 R;
+    R.setRotation(angle,axis);
+    Vector3 new_front = R * (eye - center);
+    eye = center + new_front;
+    updateViewMatrix();
 }
 
 void Camera::setOrthographic(float left, float right, float bottom, float top, float near_plane, float far_plane)

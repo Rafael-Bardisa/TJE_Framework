@@ -1,5 +1,5 @@
 /*   ColDet - C++ 3D Collision Detection Library
- *   Copyright (C) 2000   Amir Geva
+ *   Copyright (C) 2000   Amir Gevar
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public

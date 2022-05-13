@@ -8,10 +8,22 @@
 #include "includes.h"
 #include "camera.h"
 #include "utils.h"
+#include "renderer.h"
 
 class Game
 {
 public:
+    
+    enum eCameraRotation {
+        NORMAL,
+        CENTER
+    };
+    
+    enum eGameState{
+        
+    };
+    
+
 	static Game* instance;
 
 	//window
@@ -29,6 +41,8 @@ public:
 	//some vars
 	Camera* camera; //our global camera
 	bool mouse_locked; //tells if the mouse is locked (not seen)
+    eCameraRotation rotation_mode;
+    
 
 	Game( int window_width, int window_height, SDL_Window* window );
 

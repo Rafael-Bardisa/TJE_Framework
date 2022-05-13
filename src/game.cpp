@@ -42,13 +42,16 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	camera = new Camera();
 	camera->lookAt(Vector3(0.f,100.f, 100.f),Vector3(0.f,0.f,0.f), Vector3(0.f,1.f,0.f)); //position the camera and point to 0,0,0
 	camera->setPerspective(70.f,window_width/(float)window_height,0.1f,10000.f); //set the projection, we want to be perspective
+    rotation_mode = CENTER;
 
 	//load one texture without using the Texture Manager (Texture::Get would use the manager)
 	texture = new Texture();
- 	texture->load("data/texture.tga");
+ 	texture->load("data/World_map.tga");
 
 	// example of loading Mesh from Mesh Manager
-	mesh = Mesh::Get("data/box.ASE");
+#warning LOAD MESH
+	mesh = Mesh::Get("data/sphere.obj");
+    
 
 	// example of shader loading using the shaders manager
 	shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
@@ -58,6 +61,7 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 }
 
 //what to do when the image has to be draw
+#warning TODO migrate to renderer for clean code
 void Game::render(void)
 {
 	//set the clear color (the background color)
@@ -77,7 +81,7 @@ void Game::render(void)
 	//create model matrix for cube
 	Matrix44 m;
 	m.rotate(angle*DEG2RAD, Vector3(0, 1, 0));
-
+    m.scale(40, 40, 40);
 	if(shader)
 	{
 		//enable shader
@@ -115,10 +119,22 @@ void Game::update(double seconds_elapsed)
 	angle += (float)seconds_elapsed * 10.0f;
 
 	//mouse input to rotate the cam
+#warning TODO a medias :un clasico:
 	if ((Input::mouse_state & SDL_BUTTON_LEFT) || mouse_locked ) //is left button pressed?
 	{
-		camera->rotate(Input::mouse_delta.x * 0.005f, Vector3(0.0f,-1.0f,0.0f));
-		camera->rotate(Input::mouse_delta.y * 0.005f, camera->getLocalVector( Vector3(-1.0f,0.0f,0.0f)));
+        switch (rotation_mode){
+            case NORMAL:
+                //std::cout << "normal\n";
+                camera->rotate(Input::mouse_delta.x * 0.005f, Vector3(0.0f,-1.0f,0.0f));
+                camera->rotate(Input::mouse_delta.y * 0.005f, camera->getLocalVector( Vector3(-1.0f,0.0f,0.0f)));
+                break;
+            case CENTER:
+                //std::cout << "center\n";
+                camera->rotateView(Input::mouse_delta.x * 0.005f, Vector3(0.0f,-1.0f,0.0f));
+                camera->rotateView(Input::mouse_delta.y * 0.005f, camera->getLocalVector( Vector3(-1.0f,0.0f,0.0f)));
+                break;
+            default: break;
+        }
 	}
 
 	//async input to move the camera around
@@ -139,7 +155,11 @@ void Game::onKeyDown( SDL_KeyboardEvent event )
 	switch(event.keysym.sym)
 	{
 		case SDLK_ESCAPE: must_exit = true; break; //ESC key, kill the app
-		case SDLK_F1: Shader::ReloadAll(); break; 
+		case SDLK_F1: Shader::ReloadAll(); break;
+#warning DEBUG STATEMENT(?)
+        case SDLK_c:
+            std::cout <<"pressed\n";
+            rotation_mode = rotation_mode == NORMAL ? CENTER : NORMAL; break;
 	}
 }
 

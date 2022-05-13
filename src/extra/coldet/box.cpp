@@ -24,6 +24,7 @@
 #include "sysdep.h"
 #include "box.h"
 #include "mytritri.h"
+#include "tritri.cpp"
 
 __CD__BEGIN
 ////////////////////////////////////////////////////
