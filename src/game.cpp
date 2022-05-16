@@ -12,6 +12,8 @@
 //some globals
 Mesh* mesh = NULL;
 Texture* texture = NULL;
+Texture* day_texture = NULL;
+Texture* night_texture = NULL;
 Shader* shader = NULL;
 Animation* anim = NULL;
 float angle = 0;
@@ -46,7 +48,12 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 
 	//load one texture without using the Texture Manager (Texture::Get would use the manager)
 	texture = new Texture();
- 	texture->load("data/World_map.tga");
+ 	texture->load("data/earth_night.tga");
+    
+    day_texture = new Texture();
+    day_texture->load("data/mapamundi-satelital.tga");
+    night_texture = new Texture();
+    night_texture->load("data/earth_night.tga");
 
 	// example of loading Mesh from Mesh Manager
 #warning LOAD MESH
@@ -54,7 +61,7 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
     
 
 	// example of shader loading using the shaders manager
-	shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture_plus.fs");
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
@@ -90,7 +97,8 @@ void Game::render(void)
 		//upload uniforms
 		shader->setUniform("u_color", Vector4(1,1,1,1));
 		shader->setUniform("u_viewprojection", camera->viewprojection_matrix );
-		shader->setUniform("u_texture", texture, 0);
+		shader->setUniform("u_day_texture", day_texture, 0);
+        shader->setUniform("u_night_texture", night_texture, 1);
 		shader->setUniform("u_model", m);
 		shader->setUniform("u_time", time);
 
@@ -143,7 +151,15 @@ void Game::update(double seconds_elapsed)
 	if (Input::isKeyPressed(SDL_SCANCODE_S) || Input::isKeyPressed(SDL_SCANCODE_DOWN)) camera->move(Vector3(0.0f, 0.0f,-1.0f) * speed);
 	if (Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) camera->move(Vector3(1.0f, 0.0f, 0.0f) * speed);
 	if (Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) camera->move(Vector3(-1.0f,0.0f, 0.0f) * speed);
-
+    if (Input::isKeyPressed(SDL_SCANCODE_E)){
+        camera->fov = camera->fov - speed;
+        camera->updateProjectionMatrix();
+    }
+    if (Input::isKeyPressed(SDL_SCANCODE_Q)){
+        camera->fov = camera->fov + speed;
+        camera->updateProjectionMatrix();
+    }
+        
 	//to navigate with the mouse fixed in the middle
 	if (mouse_locked)
 		Input::centerMouse();
