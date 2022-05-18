@@ -35,6 +35,8 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	time = 0.0f;
 	elapsed_time = 0.0f;
 	mouse_locked = false;
+    sun_position.setTranslation(1, 0, 0);
+    season_offset = Vector3(0, 0, 0);
 
 	//OpenGL flags
 	glEnable( GL_CULL_FACE ); //render both sides of every triangle
@@ -87,7 +89,7 @@ void Game::render(void)
    
 	//create model matrix for cube
 	Matrix44 m;
-	m.rotate(angle*DEG2RAD, Vector3(0, 1, 0));
+	//m.rotate(cos(time)*20.0f*DEG2RAD, Vector3(1, 0, 0));
     m.scale(40, 40, 40);
 	if(shader)
 	{
@@ -101,6 +103,7 @@ void Game::render(void)
         shader->setUniform("u_night_texture", night_texture, 1);
 		shader->setUniform("u_model", m);
 		shader->setUniform("u_time", time);
+        shader->setUniform("u_sun_direction", normalize(sun_position.getTranslation() + season_offset));
 
 		//do the draw call
 		mesh->render( GL_TRIANGLES );
@@ -124,7 +127,10 @@ void Game::update(double seconds_elapsed)
 	float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
 
 	//example
-	angle += (float)seconds_elapsed * 10.0f;
+	//angle += (float)seconds_elapsed * 10.0f;
+    if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT))
+    sun_position.rotateGlobal(seconds_elapsed, Vector3(0,1,0));
+    season_offset.y = 0.4*cos(time/3);
 
 	//mouse input to rotate the cam
 #warning TODO a medias :un clasico:

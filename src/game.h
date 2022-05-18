@@ -37,6 +37,8 @@ public:
 	float elapsed_time;
 	int fps;
 	bool must_exit;
+    Matrix44 sun_position;
+    Vector3 season_offset;
 
 	//some vars
 	Camera* camera; //our global camera
