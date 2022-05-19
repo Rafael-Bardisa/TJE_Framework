@@ -9,6 +9,8 @@
 
 #include <cmath>
 
+#define MAX_LATITUDE 22.45f
+
 //some globals
 Mesh* mesh = NULL;
 Texture* texture = NULL;
@@ -19,6 +21,7 @@ Animation* anim = NULL;
 float angle = 0;
 float mouse_speed = 100.0f;
 FBO* fbo = NULL;
+const float season_angle = tan(MAX_LATITUDE * DEG2RAD);
 
 Game* Game::instance = NULL;
 
@@ -130,7 +133,7 @@ void Game::update(double seconds_elapsed)
 	//angle += (float)seconds_elapsed * 10.0f;
     if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT))
     sun_position.rotateGlobal(seconds_elapsed, Vector3(0,1,0));
-    season_offset.y = 0.4*cos(time/3);
+    season_offset.y = season_angle*cos(time/3);
 
 	//mouse input to rotate the cam
 #warning TODO a medias :un clasico:
