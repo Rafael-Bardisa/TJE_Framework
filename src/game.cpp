@@ -1,5 +1,7 @@
 #warning TODO texturas equirectangulares -> facil sacar latitud-longitud
 
+
+
 #include "game.h"
 #include "utils.h"
 #include "mesh.h"
@@ -122,7 +124,7 @@ void Game::render(void)
 		shader->setUniform("u_time", time);
         shader->setUniform("u_sun_direction", normalize(sun_position.getTranslation() + season_offset));
         
-#warning FLOATS OR DEAD
+#warning FLOATS OR DEAD AS HELL
         shader->setUniform("u_selected_region_color", Vector3(22.0/255.0, 0, 0));
         // pass political color to shader to highlight the selected country
 
