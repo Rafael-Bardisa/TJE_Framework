@@ -35,6 +35,9 @@ make
 You can write any feedback to javi.agenjo@gmail.com
 ---------------------------------------------------
 
+Rafael Bardisa
+231142
+
 I have only tested my code in Xcode, so I'm 100% sure that the makefile will not work for windows. I have made a GitHub repository just in case: https://github.com/Rafael-Bardisa/TJE_Framework
 
 
