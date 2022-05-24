@@ -1,3 +1,5 @@
+#warning TODO texturas equirectangulares -> facil sacar latitud-longitud
+
 #include "game.h"
 #include "utils.h"
 #include "mesh.h"
@@ -13,9 +15,10 @@
 
 //some globals
 Mesh* mesh = NULL;
-Texture* texture = NULL;
+//Texture* texture = NULL;
 Texture* day_texture = NULL;
 Texture* night_texture = NULL;
+Texture* regions_texture = NULL;
 Shader* shader = NULL;
 Animation* anim = NULL;
 float angle = 0;
@@ -52,14 +55,16 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
     rotation_mode = CENTER;
 
 	//load one texture without using the Texture Manager (Texture::Get would use the manager)
-	texture = new Texture();
- 	texture->load("data/earth_night.tga");
+	//texture = new Texture();
+ 	//texture->load("data/earth_night.tga");
     
     day_texture = new Texture();
-    day_texture->load("data/mapamundi-satelital.tga");
+    //day_texture->load("data/mapamundi-satelital.tga");
+    day_texture->load("data/textures/earth_day.tga");
     night_texture = new Texture();
-    night_texture->load("data/earth_night.tga");
-
+    night_texture->load("data/textures/earth_night.tga");
+    regions_texture = new Texture();
+    regions_texture->load("data/textures/test_borders_6.tga");
 	// example of loading Mesh from Mesh Manager
 #warning LOAD MESH
 	mesh = Mesh::Get("data/sphere.obj");
@@ -102,11 +107,18 @@ void Game::render(void)
 		//upload uniforms
 		shader->setUniform("u_color", Vector4(1,1,1,1));
 		shader->setUniform("u_viewprojection", camera->viewprojection_matrix );
+        
 		shader->setUniform("u_day_texture", day_texture, 0);
         shader->setUniform("u_night_texture", night_texture, 1);
+        shader->setUniform("u_regions_texture", regions_texture, 2);
+        
 		shader->setUniform("u_model", m);
 		shader->setUniform("u_time", time);
         shader->setUniform("u_sun_direction", normalize(sun_position.getTranslation() + season_offset));
+        
+#warning FLOATS OR DEAD
+        shader->setUniform("u_selected_region_color", Vector3(22.0/255.0, 0, 0));
+        // pass political color to shader to highlight the selected country
 
 		//do the draw call
 		mesh->render( GL_TRIANGLES );
@@ -139,6 +151,16 @@ void Game::update(double seconds_elapsed)
 #warning TODO a medias :un clasico:
 	if ((Input::mouse_state & SDL_BUTTON_LEFT) || mouse_locked ) //is left button pressed?
 	{
+        // cast ray to detect collision with earth
+        //convert world coordinates of collision to uvs
+        // query the color of countries texture at uv
+        
+        
+        
+        
+        
+        
+        
         switch (rotation_mode){
             case NORMAL:
                 //std::cout << "normal\n";
@@ -174,6 +196,7 @@ void Game::update(double seconds_elapsed)
 		Input::centerMouse();
 }
 
+
 //Keyboard event handler (sync input)
 void Game::onKeyDown( SDL_KeyboardEvent event )
 {
@@ -181,7 +204,7 @@ void Game::onKeyDown( SDL_KeyboardEvent event )
 	{
 		case SDLK_ESCAPE: must_exit = true; break; //ESC key, kill the app
 		case SDLK_F1: Shader::ReloadAll(); break;
-#warning DEBUG STATEMENT(?)
+//#warning DEBUG STATEMENT(?)
         case SDLK_c:
             std::cout <<"pressed\n";
             rotation_mode = rotation_mode == NORMAL ? CENTER : NORMAL; break;
