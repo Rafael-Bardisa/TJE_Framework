@@ -58,6 +58,7 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 
     enableAudio();
     synth.playSample("data/sound/bg/mus-play2.wav", 1, true);
+    
     //synth.osc1.amplitude = 0.3;
 	//load one texture without using the Texture Manager (Texture::Get would use the manager)
 	//texture = new Texture();
