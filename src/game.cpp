@@ -8,6 +8,7 @@
 #include "shader.h"
 #include "input.h"
 #include "animation.h"
+#include "synth.h"
 
 #include <cmath>
 
@@ -71,7 +72,7 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
     
 
 	// example of shader loading using the shaders manager
-	shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture_plus.fs");
+	shader = Shader::Get("data/shaders/basic.vs", "data/shaders/geoscape.fs");
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
@@ -137,6 +138,8 @@ void Game::render(void)
 	SDL_GL_SwapWindow(this->window);
 }
 
+
+#warning STATES
 void Game::update(double seconds_elapsed)
 {
 	float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
