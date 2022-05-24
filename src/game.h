@@ -9,6 +9,7 @@
 #include "camera.h"
 #include "utils.h"
 #include "renderer.h"
+#include "synth.h"
 
 class Game
 {
@@ -20,7 +21,7 @@ public:
     };
     
     enum eGameState{
-        
+        GEOSCAPE
     };
     
 
@@ -45,6 +46,8 @@ public:
 	bool mouse_locked; //tells if the mouse is locked (not seen)
     eCameraRotation rotation_mode;
     
+    //sound
+    Synth synth;
 
 	Game( int window_width, int window_height, SDL_Window* window );
 
@@ -52,6 +55,10 @@ public:
 	void render( void );
 	void update( double dt );
 
+    void enableAudio(int device = -1);
+    void onAudio(float* buffer, unsigned int len, double time, SDL_AudioSpec &audio_spec); //called constantly to fill the audio buffer
+
+    
 	//events
 	void onKeyDown( SDL_KeyboardEvent event );
 	void onKeyUp(SDL_KeyboardEvent event);
