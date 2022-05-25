@@ -10,6 +10,7 @@
 #include "shader.h"
 #include "input.h"
 #include "animation.h"
+#include "extra/coldet/coldet.h"
 
 #include <cmath>
 
@@ -21,6 +22,12 @@ Mesh* mesh = NULL;
 Texture* day_texture = NULL;
 Texture* night_texture = NULL;
 Texture* regions_texture = NULL;
+
+//copy in cpu to get information
+Image* day_image = NULL;
+Image* night_image = NULL;
+Image* regions_image = NULL;
+
 Shader* shader = NULL;
 Animation* anim = NULL;
 float angle = 0;
@@ -54,7 +61,7 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 
 	//create our camera
 	camera = new Camera();
-	camera->lookAt(Vector3(0.f,100.f, 100.f),Vector3(0.f,0.f,0.f), Vector3(0.f,1.f,0.f)); //position the camera and point to 0,0,0
+	camera->lookAt(Vector3(0.f,3.f, 3.f),Vector3(0.f,0.f,0.f), Vector3(0.f,1.f,0.f)); //position the camera and point to 0,0,0
 	camera->setPerspective(70.f,window_width/(float)window_height,0.1f,10000.f); //set the projection, we want to be perspective
     rotation_mode = CENTER;
 
@@ -65,9 +72,15 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	//load one texture without using the Texture Manager (Texture::Get would use the manager)
 	//texture = new Texture();
  	//texture->load("data/earth_night.tga");
+    day_image = new Image();
+    day_image->loadTGA("data/textures/earth_day.tga");
+    night_image = new Image();
+    night_image->loadTGA("data/textures/earth_night.tga");
+    regions_image = new Image();
+    regions_image->loadTGA("data/textures/test_borders_6.tga");
+    
     
     day_texture = new Texture();
-    //day_texture->load("data/mapamundi-satelital.tga");
     day_texture->load("data/textures/earth_day.tga");
     night_texture = new Texture();
     night_texture->load("data/textures/earth_night.tga");
@@ -106,12 +119,12 @@ void Game::render(void)
 	//create model matrix for cube
 	Matrix44 m;
 	//m.rotate(cos(time)*20.0f*DEG2RAD, Vector3(1, 0, 0));
-    m.scale(40, 40, 40);
+//#warning rescale to normalize
+    //m.scale(40, 40, 40);
 	if(shader)
 	{
 		//enable shader
 		shader->enable();
-
 		//upload uniforms
 		shader->setUniform("u_color", Vector4(1,1,1,1));
 		shader->setUniform("u_viewprojection", camera->viewprojection_matrix );
@@ -125,7 +138,7 @@ void Game::render(void)
         shader->setUniform("u_sun_direction", normalize(sun_position.getTranslation() + season_offset));
         
 #warning FLOATS OR DEAD AS HELL
-        shader->setUniform("u_selected_region_color", Vector3(22.0/255.0, 0, 0));
+        shader->setUniform("u_selected_region_color", Vector3(21.0/255.0, 0, 0));
         // pass political color to shader to highlight the selected country
 
 		//do the draw call
@@ -136,7 +149,7 @@ void Game::render(void)
 	}
 
 	//Draw the floor grid
-	//drawGrid();
+	drawGrid();
 
 	//render the FPS, Draw Calls, etc
 	drawText(2, 2, getGPUStats(), Vector3(1, 1, 1), 2);
@@ -144,7 +157,6 @@ void Game::render(void)
 	//swap between front buffer and back buffer
 	SDL_GL_SwapWindow(this->window);
 }
-
 
 #warning STATES
 void Game::update(double seconds_elapsed)
@@ -162,8 +174,24 @@ void Game::update(double seconds_elapsed)
 	if ((Input::mouse_state & SDL_BUTTON_LEFT) || mouse_locked ) //is left button pressed?
 	{
         // cast ray to detect collision with earth
-        //convert world coordinates of collision to uvs
-        // query the color of countries texture at uv
+        Vector2 mouse_position = Input::mouse_position;
+        Vector3 direction = camera->getRayDirection(mouse_position.x, mouse_position.y, window_width, window_height);
+        
+        //Y IS HEIGHT
+        Vector3 collision_point = Vector3(0, 0, 0);
+
+        // world is always at 0,0,0 with radius 1
+#warning this is bool, refactor
+        SphereRayCollision(Vector3().v, 1.f, camera->eye.v, direction.v, collision_point.v);
+        
+        if (collision_point.length() > 0){
+            //convert world coordinates of collision to uvs
+            Vector2 polar_coords = collision_point.toPolar();
+            
+            // query the color of countries texture at uv
+            Color region_color = regions_image->getPixelLatLon(polar_coords.x, polar_coords.y);
+            std::cout << "|-|" << (int)region_color.r << "|-|";
+        }
         
         
         

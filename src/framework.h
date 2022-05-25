@@ -8,6 +8,7 @@
 #include <vector>
 #include <cmath>
 #include <stdlib.h>
+#include <iostream>
 
 #ifndef PI
 	#define PI 3.14159265359
@@ -110,11 +111,24 @@ public:
 
 	Vector3 cross( const Vector3& v ) const;
 	float dot( const Vector3& v ) const;
+    
+    Vector2 toPolar();
 
 	void parseFromText(const char* text, const char separator);
 
 	float& operator [] (int n) { return v[n]; }
 	void operator *= (float v) { x *= v; y *= v; z *= v; }
+    
+    friend auto operator<<(std::ostream &os, Vector3 const &vector) -> std::ostream&{
+        return os <<
+        "(" <<
+        vector.x <<
+        ", " <<
+        vector.y <<
+        ", " <<
+        vector.z <<
+        ")";
+    }
 };
 
 Vector3 normalize(Vector3 n);
@@ -127,6 +141,7 @@ inline Vector3 operator - (const Vector3& a, const Vector3& b) { return Vector3(
 inline Vector3 operator * (const Vector3& a, const Vector3& b) { return Vector3(a.x * b.x, a.y * b.y, a.z * b.z); }
 inline Vector3 operator * (const Vector3& a, float v) { return Vector3(a.x * v, a.y * v, a.z * v); }
 inline Vector3 operator * (float v, const Vector3& a) { return Vector3(a.x * v, a.y * v, a.z * v); }
+
 
 class Vector4
 {

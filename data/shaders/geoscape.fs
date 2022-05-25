@@ -23,7 +23,7 @@ uniform int u_region_type;
 //bigger number -> bigger region
 
 
-#define TOLERANCE 0.5/255.0
+#define TOLERANCE 0.0001/255.0
 #define PI 3.14
 
 

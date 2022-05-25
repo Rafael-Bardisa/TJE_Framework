@@ -53,6 +53,15 @@ public:
 		int pos = y*width* num_channels + x* num_channels;
 		return Color(data[pos], data[pos + 1], data[pos + 2], num_channels == 4 ? 255 : data[pos + 3]);
 	};
+    
+    //gets pixel from latitude longitude. Assumes equirectangular projection
+    Color getPixelLatLon(float lat, float lon) {
+        int y_pos = (1.f-(lat+90.f)/180.f) * height;
+        int x_pos = ((lon+180.f)/360.f) * width;
+        
+        return getPixel(x_pos, y_pos);
+    };
+    
 	void setPixel(int x, int y, Color v) {
 		assert(x >= 0 && x < (int)width && y >= 0 && y < (int)height && "writing of memory");
 		int pos = y*width*num_channels + x* num_channels;

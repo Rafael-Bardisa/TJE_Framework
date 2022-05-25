@@ -167,6 +167,7 @@ EXPORT CollisionModel3D* newCollisionModel3D(bool Static=false);
     origin, direction define the ray
     point will contain point of intersection, if one is found.
 */
+#warning THE GOOD COLLISION MODEL
 EXPORT bool SphereRayCollision(float center[3], float radius,
                         float origin[3], float direction[3],
                         float point[3]);

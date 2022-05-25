@@ -176,6 +176,13 @@ Vector3 cross(const Vector3& a, const Vector3& b)
 	return Vector3(a.y*b.z - a.z*b.y, a.z*b.x - a.x*b.z, a.x*b.y - a.y*b.x);
 }
 
+//returns as latitude, longitude
+Vector2 Vector3::toPolar()
+{
+    Vector3 copy = *this;
+    copy.normalize();
+    return Vector2( -(acos(copy.y) * RAD2DEG) + 90.f, atan2(copy.z, -copy.x) * RAD2DEG);
+}
 
 //*********************************
 const Matrix44 Matrix44::IDENTITY;
