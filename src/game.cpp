@@ -1,7 +1,3 @@
-#warning TODO texturas equirectangulares -> facil sacar latitud-longitud
-
-
-
 #include "game.h"
 #include "utils.h"
 #include "mesh.h"
@@ -15,6 +11,7 @@
 #include <cmath>
 
 #define MAX_LATITUDE 22.45f
+#define BYTE_TO_SHADER (1.f/255.f)
 
 //some globals
 Mesh* mesh = NULL;
@@ -30,6 +27,7 @@ Image* regions_image = NULL;
 
 Shader* shader = NULL;
 Animation* anim = NULL;
+
 float angle = 0;
 float mouse_speed = 100.0f;
 FBO* fbo = NULL;
@@ -64,7 +62,8 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	camera->lookAt(Vector3(0.f,3.f, 3.f),Vector3(0.f,0.f,0.f), Vector3(0.f,1.f,0.f)); //position the camera and point to 0,0,0
 	camera->setPerspective(70.f,window_width/(float)window_height,0.1f,10000.f); //set the projection, we want to be perspective
     rotation_mode = CENTER;
-
+    selected_color = Color(0,0,0,0);
+    
     enableAudio();
     synth.playSample("data/sound/bg/mus-play2.wav", 1, true);
     
@@ -139,8 +138,9 @@ void Game::render(void)
 		shader->setUniform("u_time", time);
         shader->setUniform("u_sun_direction", normalize(sun_position.getTranslation() + season_offset));
         
+        
 #warning FLOATS OR DEAD AS HELL
-        shader->setUniform("u_selected_region_color", Vector3(21.0/255.0, 0, 0));
+        shader->setUniform("u_selected_region_color", (selected_color.toVector4()*BYTE_TO_SHADER));
         // pass political color to shader to highlight the selected country
 
 		//do the draw call
@@ -183,16 +183,15 @@ void Game::update(double seconds_elapsed)
         Vector3 collision_point = Vector3(0, 0, 0);
 
         // world is always at 0,0,0 with radius 1
-#warning this is bool, refactor
-        SphereRayCollision(Vector3().v, 1.f, camera->eye.v, direction.v, collision_point.v);
-        
-        if (collision_point.length() > 0){
+
+        // only update color if collision
+        if (SphereRayCollision(Vector3().v, 1.f, camera->eye.v, direction.v, collision_point.v)){
             //convert world coordinates of collision to uvs
             Vector2 polar_coords = collision_point.toPolar();
             
             // query the color of countries texture at uv
-            Color region_color = regions_image->getPixelLatLon(polar_coords.x, polar_coords.y);
-            std::cout << "|-|" << (int)region_color.r << "|-|";
+            selected_color = regions_image->getPixelLatLon(polar_coords.x, polar_coords.y);
+            std::cout << "|-|" << (int)selected_color.a << "|-|";
         }
         
         

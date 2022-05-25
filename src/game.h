@@ -46,6 +46,8 @@ public:
 	bool mouse_locked; //tells if the mouse is locked (not seen)
     eCameraRotation rotation_mode;
     
+    Color selected_color;
+    
     //sound
     Synth synth;
 
