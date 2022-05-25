@@ -69,17 +69,19 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
     synth.playSample("data/sound/bg/mus-play2.wav", 1, true);
     
     //synth.osc1.amplitude = 0.3;
-	//load one texture without using the Texture Manager (Texture::Get would use the manager)
-	//texture = new Texture();
- 	//texture->load("data/earth_night.tga");
+
+    //images are flipped idk why
     day_image = new Image();
     day_image->loadTGA("data/textures/earth_day.tga");
+    day_image->flipY();
     night_image = new Image();
     night_image->loadTGA("data/textures/earth_night.tga");
+    night_image->flipY();
     regions_image = new Image();
     regions_image->loadTGA("data/textures/test_borders_6.tga");
+    regions_image->flipY();
     
-    
+    //load one texture without using the Texture Manager (Texture::Get would use the manager)
     day_texture = new Texture();
     day_texture->load("data/textures/earth_day.tga");
     night_texture = new Texture();

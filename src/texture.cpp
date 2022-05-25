@@ -648,6 +648,7 @@ void Image::fromTexture(Texture* texture)
 
 //TGA format from: http://www.paulbourke.net/dataformats/tga/
 //also on https://gshaw.ca/closecombat/formats/tga.html
+#warning TODO FLIP Y CORRECTLY
 bool Image::loadTGA(const char* filename)
 {
 	GLubyte TGAheader[12] = {0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0};
