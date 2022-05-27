@@ -61,6 +61,23 @@ void Vector2::parseFromText(const char* text)
 	}
 }
 
+//returns as latitude, longitude
+#warning hack feo
+Vector3 Vector2::fromPolar()
+{
+    Vector2 copy = *this;
+    copy.normalize();
+    //return Vector2( -(acos(copy.y) * RAD2DEG) + 90.f, atan2(copy.z, -copy.x) * RAD2DEG);
+    return Vector3(cos(y * DEG2RAD), cos(-x + 90.f * DEG2RAD), sin(y * DEG2RAD));
+}
+/*
+ -(acos(copy.y) * RAD2DEG) + 90.f = x
+ -(acos(copy.y) * RAD2DEG) = x - 90.f
+ acos(copy.y) * RAD2DEG = -x + 90.f
+ acos(copy.y) = -x + 90.f * DEG2RAD
+ copy.y = cos(-x + 90.f * DEG2RAD)
+ 
+ */
 
 Vector2 operator * (const Vector2& a, float v) { return Vector2(a.x * v, a.y * v); }
 Vector2 operator + (const Vector2& a, const Vector2& b) { return Vector2(a.x + b.x, a.y + b.y); }
@@ -177,6 +194,7 @@ Vector3 cross(const Vector3& a, const Vector3& b)
 }
 
 //returns as latitude, longitude
+#warning hack feo
 Vector2 Vector3::toPolar()
 {
     Vector3 copy = *this;

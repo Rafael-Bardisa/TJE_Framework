@@ -10,6 +10,9 @@
 #include <stdlib.h>
 #include <iostream>
 
+//forward declaration for fromPolar method
+class Vector3;
+
 #ifndef PI
 	#define PI 3.14159265359
 #endif
@@ -55,6 +58,8 @@ public:
 	float distance(const Vector2& v);
 	void random(float range);
 	void parseFromText(const char* text);
+    
+    Vector3 fromPolar();
 
 	void operator *= (float v) { x*=v; y*=v; }
 };

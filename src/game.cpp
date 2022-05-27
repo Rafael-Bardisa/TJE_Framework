@@ -70,6 +70,7 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
     //synth.osc1.amplitude = 0.3;
 
     //images are flipped idk why
+#warning hack feo
     day_image = new Image();
     day_image->loadTGA("data/textures/earth_day.tga");
     day_image->flipY();
@@ -100,6 +101,8 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 }
 
 //what to do when the image has to be draw
+
+//main functions
 #warning TODO migrate to renderer for clean code
 void Game::render(void)
 {
@@ -191,7 +194,7 @@ void Game::update(double seconds_elapsed)
             
             // query the color of countries texture at uv
             selected_color = regions_image->getPixelLatLon(polar_coords.x, polar_coords.y);
-            std::cout << "|-|" << (int)selected_color.a << "|-|";
+            //std::cout << "|-|" << (int)selected_color.a << "|-|";
         }
         
         
@@ -233,6 +236,25 @@ void Game::update(double seconds_elapsed)
 	//to navigate with the mouse fixed in the middle
 	if (mouse_locked)
 		Input::centerMouse();
+}
+
+
+void Game::initStages(){
+    stages.clear();
+    stages.reserve(NUM_STAGES);
+    stages.push_back(new GeoStage(this));
+    stages.push_back(new BattleStage(this));
+}
+
+Stage* Game::getStage(STAGE_ID id){
+    return stages[id];
+}
+
+// set new stage as current. Store time of change and set local stage time to 0
+void Game::setStage(STAGE_ID id){
+    current_stage = id;
+    //getStage(id)->epoch = time;
+    //getStage(id)->localFrame = 0;
 }
 
 //AUDIO STUFF ********************
@@ -296,6 +318,8 @@ void Game::onAudio(float *buffer, unsigned int len, double time, SDL_AudioSpec& 
     //fill the audio buffer using our custom retro synth
     synth.generateAudio(buffer, len, audio_spec);
 }
+
+
 
 //Keyboard event handler (sync input)
 void Game::onKeyDown( SDL_KeyboardEvent event )

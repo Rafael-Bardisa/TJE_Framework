@@ -40,6 +40,8 @@
 		12D3D2D619903A9A00779234 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D3D2D519903A9A00779234 /* OpenGL.framework */; };
 		B4275E7D283D84E4009E1F6B /* synth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B4275E7C283D84E4009E1F6B /* synth.cpp */; };
 		B4275E7F283D8671009E1F6B /* synth.h in Sources */ = {isa = PBXBuildFile; fileRef = B4275E7E283D8671009E1F6B /* synth.h */; };
+		B4AF39F7283FC76B0064CA9F /* stage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B4AF39F5283FC76B0064CA9F /* stage.cpp */; };
+		B4AF39FB283FCE530064CA9F /* stage.h in Sources */ = {isa = PBXBuildFile; fileRef = B4AF39FA283FCE530064CA9F /* stage.h */; };
 		B4B3152D282E3A480009EBFF /* renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B4B3152B282E3A480009EBFF /* renderer.cpp */; };
 /* End PBXBuildFile section */
 
@@ -92,6 +94,12 @@
 		12D3D2D519903A9A00779234 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		B4275E7C283D84E4009E1F6B /* synth.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = synth.cpp; path = ../src/synth.cpp; sourceTree = "<group>"; };
 		B4275E7E283D8671009E1F6B /* synth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = synth.h; sourceTree = "<group>"; };
+		B4AF39F4283FC76B0064CA9F /* input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = input.h; path = ../../src/input.h; sourceTree = "<group>"; };
+		B4AF39F5283FC76B0064CA9F /* stage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stage.cpp; path = ../../src/stage.cpp; sourceTree = "<group>"; };
+		B4AF39F6283FC76B0064CA9F /* fbo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fbo.h; path = ../../src/fbo.h; sourceTree = "<group>"; };
+		B4AF39F8283FC7770064CA9F /* animation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = animation.h; path = ../../src/animation.h; sourceTree = "<group>"; };
+		B4AF39F9283FC7E70064CA9F /* stage.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = stage.cpp; path = ../src/stage.cpp; sourceTree = "<group>"; };
+		B4AF39FA283FCE530064CA9F /* stage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stage.h; path = ../src/stage.h; sourceTree = "<group>"; };
 		B4B3152B282E3A480009EBFF /* renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = renderer.cpp; path = ../../src/renderer.cpp; sourceTree = "<group>"; };
 		B4B3152C282E3A480009EBFF /* renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = renderer.h; path = ../../src/renderer.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -114,6 +122,8 @@
 		12BE84B11981D8180090DDBD = {
 			isa = PBXGroup;
 			children = (
+				B4AF39FA283FCE530064CA9F /* stage.h */,
+				B4AF39F9283FC7E70064CA9F /* stage.cpp */,
 				B4275E7E283D8671009E1F6B /* synth.h */,
 				B4275E7C283D84E4009E1F6B /* synth.cpp */,
 				1208AC942433FD5800BB6E8A /* input.cpp */,
@@ -177,6 +187,10 @@
 				128DBA181AD69163002B8C0C /* framework.cpp */,
 				128DBA191AD69163002B8C0C /* framework.h */,
 				128DBA1A1AD69163002B8C0C /* game.cpp */,
+				B4AF39F6283FC76B0064CA9F /* fbo.h */,
+				B4AF39F4283FC76B0064CA9F /* input.h */,
+				B4AF39F8283FC7770064CA9F /* animation.h */,
+				B4AF39F5283FC76B0064CA9F /* stage.cpp */,
 				128DBA1B1AD69163002B8C0C /* game.h */,
 				128DBA1C1AD69163002B8C0C /* includes.h */,
 				128DBA1D1AD69163002B8C0C /* main.cpp */,
@@ -276,6 +290,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4AF39FB283FCE530064CA9F /* stage.h in Sources */,
+				B4AF39F7283FC76B0064CA9F /* stage.cpp in Sources */,
 				B4275E7F283D8671009E1F6B /* synth.h in Sources */,
 				B4275E7D283D84E4009E1F6B /* synth.cpp in Sources */,
 				1208AC952433FD5800BB6E8A /* input.cpp in Sources */,

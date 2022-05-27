@@ -10,6 +10,9 @@
 #include "utils.h"
 #include "renderer.h"
 #include "synth.h"
+#include "stage.h"
+
+#define NUM_STAGES 2
 
 class Game
 {
@@ -20,7 +23,7 @@ public:
         CENTER
     };
     
-    enum eGameState{
+    enum eGameStage{
         GEOSCAPE
     };
     
@@ -48,15 +51,29 @@ public:
     
     Color selected_color;
     
+    STAGE_ID current_stage;
+    std::vector<Stage*> stages;
+    
     //sound
     Synth synth;
 
 	Game( int window_width, int window_height, SDL_Window* window );
-
+    
 	//main functions
 	void render( void );
 	void update( double dt );
 
+    
+    //stage things
+    void initStages();
+    Stage* getStage(STAGE_ID id);
+    void setStage(STAGE_ID id);
+    Stage* getCurrentStage(){return stages[current_stage];};
+    
+    
+    
+    
+    //audio
     void enableAudio(int device = -1);
     void onAudio(float* buffer, unsigned int len, double time, SDL_AudioSpec &audio_spec); //called constantly to fill the audio buffer
 
