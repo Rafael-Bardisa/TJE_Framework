@@ -23,7 +23,7 @@ uniform int u_region_type;
 //bigger number -> bigger region
 
 
-#define TOLERANCE 0.00001/255.0
+#define TOLERANCE 0.0001/255.0
 #define PI 3.14
 
 
@@ -51,7 +51,7 @@ void main()
     vec4 pixel_region_color = texture2D(u_regions_texture, uv);
     
     // checks before entering function are better because we don't change the context?
-    if (u_selected_region_color.r <= 0.99 || pixel_region_color.r <= 0.99)
+    if (u_selected_region_color.r < 1.0 || pixel_region_color.r < 1.0)
         tex_col_val += region_factor(u_selected_region_color, pixel_region_color);
     
 	gl_FragColor = u_color * tex_col_val;

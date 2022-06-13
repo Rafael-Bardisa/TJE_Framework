@@ -68,7 +68,7 @@ Vector3 Vector2::fromPolar()
     Vector2 copy = *this;
     copy.normalize();
     //return Vector2( -(acos(copy.y) * RAD2DEG) + 90.f, atan2(copy.z, -copy.x) * RAD2DEG);
-    return Vector3(cos(y * DEG2RAD), cos(-x + 90.f * DEG2RAD), sin(y * DEG2RAD));
+    return Vector3(cos(copy.y * DEG2RAD), cos(-copy.x + 90.f * DEG2RAD), sin(copy.y * DEG2RAD));
 }
 /*
  -(acos(copy.y) * RAD2DEG) + 90.f = x

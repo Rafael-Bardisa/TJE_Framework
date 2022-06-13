@@ -14,3 +14,7 @@ visualstudio/VS2015/Release
 *.ipch
 *.db
 *.exe
+data/world-countries/.idea/inspectionProfiles/profiles_settings.xml
+data/textures/test_borders_4.tga
+data/textures/test_borders_5.tga
+ConvModule.md
