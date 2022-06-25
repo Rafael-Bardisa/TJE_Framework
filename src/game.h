@@ -12,8 +12,20 @@
 #include "synth.h"
 #include "stage.h"
 
+#define MAX_LATITUDE 22.45f
+#define BYTE_TO_SHADER (1.f/255.f)
+
 #define NUM_STAGES 2
 
+//forward declaration
+class Texture;
+class Image;
+class Mesh;
+class FBO;
+class Shader;
+
+
+//class definition
 class Game
 {
 public:
@@ -23,11 +35,6 @@ public:
         CENTER
     };
     
-    enum eGameStage{
-        GEOSCAPE
-    };
-    
-
 	static Game* instance;
 
 	//window
@@ -43,6 +50,23 @@ public:
 	bool must_exit;
     Matrix44 sun_position;
     Vector3 season_offset;
+    
+    float angle = 0;
+    float mouse_speed = 100.0f;
+    FBO* fbo = NULL;
+    const float season_angle = tan(MAX_LATITUDE * DEG2RAD);
+
+    Mesh* mesh = NULL;
+    Shader* shader = NULL;
+    
+    Texture* day_texture = NULL;
+    Texture* night_texture = NULL;
+    Texture* regions_texture = NULL;
+
+    //copy in cpu to get information
+    Image* day_image = NULL;
+    Image* night_image = NULL;
+    Image* regions_image = NULL;
 
 	//some vars
 	Camera* camera; //our global camera

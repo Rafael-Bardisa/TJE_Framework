@@ -10,10 +10,8 @@
 
 #include <cmath>
 
-#define MAX_LATITUDE 22.45f
-#define BYTE_TO_SHADER (1.f/255.f)
-
 //some globals
+/*
 Mesh* mesh = NULL;
 //Texture* texture = NULL;
 Texture* day_texture = NULL;
@@ -24,19 +22,22 @@ Texture* regions_texture = NULL;
 Image* day_image = NULL;
 Image* night_image = NULL;
 Image* regions_image = NULL;
+*/
 
-Shader* shader = NULL;
 Animation* anim = NULL;
-
+/*
 float angle = 0;
 float mouse_speed = 100.0f;
 FBO* fbo = NULL;
-const float season_angle = tan(MAX_LATITUDE * DEG2RAD);
+const float season_angle = tan(MAX_LATITUDE * DEG2RAD);*/
 
 Game* Game::instance = NULL;
 
 Game::Game(int window_width, int window_height, SDL_Window* window)
 {
+    this->initStages();
+    this->setStage(GEOSCAPE);
+    
 	this->window_width = window_width;
 	this->window_height = window_height;
 	this->window = window;
@@ -106,6 +107,8 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 #warning TODO migrate to renderer for clean code
 void Game::render(void)
 {
+    /*
+    
 	//set the clear color (the background color)
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 
@@ -161,11 +164,14 @@ void Game::render(void)
 
 	//swap between front buffer and back buffer
 	SDL_GL_SwapWindow(this->window);
+     */
+    this->getCurrentStage()->render();
 }
 
 #warning STATES
 void Game::update(double seconds_elapsed)
 {
+    /*
 	float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
 
 	//example
@@ -236,6 +242,8 @@ void Game::update(double seconds_elapsed)
 	//to navigate with the mouse fixed in the middle
 	if (mouse_locked)
 		Input::centerMouse();
+     */
+    this->getCurrentStage()->update(seconds_elapsed);
 }
 
 
