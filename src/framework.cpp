@@ -65,10 +65,17 @@ void Vector2::parseFromText(const char* text)
 #warning hack feo
 Vector3 Vector2::fromPolar()
 {
-    Vector2 copy = *this;
-    copy.normalize();
+    //Vector2 copy = *this;
+    //no need to copy because we do not normalize here
     //return Vector2( -(acos(copy.y) * RAD2DEG) + 90.f, atan2(copy.z, -copy.x) * RAD2DEG);
-    return Vector3(cos(copy.y * DEG2RAD), cos(-copy.x + 90.f * DEG2RAD), sin(copy.y * DEG2RAD));
+    float v_cos = cos((this->x - 90)*DEG2RAD);
+    float v_sin = sin((this->x - 90)*DEG2RAD);
+    float h_cos = cos((this->y)*DEG2RAD);
+    float h_sin = sin((this->y)*DEG2RAD);
+    
+    // because the axis are rotated the formula is a bit different
+    
+    return Vector3(v_sin * h_cos, v_cos, -v_sin * h_sin);
 }
 /*
  -(acos(copy.y) * RAD2DEG) + 90.f = x

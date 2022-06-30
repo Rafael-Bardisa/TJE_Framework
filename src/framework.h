@@ -62,11 +62,22 @@ public:
     Vector3 fromPolar();
 
 	void operator *= (float v) { x*=v; y*=v; }
+    
+    friend auto operator<<(std::ostream &os, Vector2 const &vector) -> std::ostream&{
+        return os <<
+        "(" <<
+        vector.x <<
+        ", " <<
+        vector.y <<
+        ")";
+    }
 };
 
 Vector2 operator * (const Vector2& a, float v);
 Vector2 operator + (const Vector2& a, const Vector2& b);
 Vector2 operator - (const Vector2& a, const Vector2& b);
+
+
 
 Vector2 normalize(Vector2 n);
 inline Vector2 lerp(const Vector2& a, const Vector2& b, float v) { return a*(1.0f - v) + b*v; }

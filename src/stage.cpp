@@ -164,7 +164,9 @@ STAGE_ID GeoStage::update(float seconds_elapsed) {
             
             // query the color of countries texture at uv
             reference->selected_color = regions_image->getPixelLatLon(polar_coords.x, polar_coords.y);
-            std::cout << (int)selected_color.a << std::endl;
+            std::cout << collision_point << std::endl;
+            std::cout << polar_coords << std::endl;
+            std::cout << polar_coords.fromPolar() << std::endl;
         }
         
         
